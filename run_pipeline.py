@@ -1,48 +1,74 @@
 from utils.file_handler import load_json, save_json
 from target_client import TargetClient
+from agents.attacker_agent import AttackerAgent
 
-# Initialize Target Client
+# Initialize components
 client = TargetClient()
+attacker = AttackerAgent()
 
 
 def process_prompt(seed):
     """
-    Process a single prompt.
+    Process a single prompt through the attack pipeline.
     """
 
-    # Extract data
     prompt_number = seed["No"]
     category = seed["Suggested Category"]
     prompt = seed["Prompt"]
 
-    print("\n" + "=" * 50)
+    print("\n" + "=" * 60)
     print(f"📌 Processing Prompt {prompt_number}")
     print(f"📂 Category : {category}")
-    print("-" * 50)
+    print("-" * 60)
 
     print("✅ Prompt Loaded")
-    print("⚔️  Attack Stage      : Waiting")
-    print("🤖 Target Client      : Waiting")
-    print("💾 Result Prepared")
 
-    # Placeholder (replace later with TargetClient)
-    response = "Waiting for target_client.py"
+    # -----------------------------
+    # Step 1 : Generate attacked prompt
+    # -----------------------------
+    attack_result = attacker.attack(prompt)
 
+    if not attack_result.success:
+        raise RuntimeError(
+            f"Attack failed: {attack_result.error}"
+        )
+
+    attacked_prompt = attack_result.attacked_prompt
+
+    print("⚔️ Attack Stage      : Completed")
+    print(f"📝 Strategy          : {attack_result.strategy}")
+
+    # -----------------------------
+    # Step 2 : Send attacked prompt
+    # to target model
+    # -----------------------------
+    response = client.generate_response(attacked_prompt)
+
+    print("🤖 Target Client     : Completed")
+
+    # -----------------------------
+    # Final Result
+    # -----------------------------
     result = {
         "No": prompt_number,
         "Category": category,
-        "Prompt": prompt,
+        "Original Prompt": prompt,
+        "Attack Strategy": attack_result.strategy,
+        "Attacked Prompt": attacked_prompt,
+        "Attack Success": attack_result.success,
+        "Execution Time": attack_result.execution_time,
         "Response": response
     }
 
-    print("=" * 50)
+    print("💾 Result Prepared")
+    print("=" * 60)
 
     return result
 
 
 def process_dataset():
     """
-    Process the entire dataset.
+    Process all prompts from dataset.
     """
 
     seeds = load_json("data/seeds.json")
@@ -55,26 +81,39 @@ def process_dataset():
     results = []
 
     for seed in seeds:
+
         try:
+
             result = process_prompt(seed)
+
             results.append(result)
 
         except Exception as e:
-            print(f"❌ Error processing Prompt {seed['No']}: {e}")
-            continue
+
+            print(f"\n❌ Error processing Prompt {seed['No']}")
+            print(e)
+
+            results.append({
+                "No": seed["No"],
+                "Category": seed["Suggested Category"],
+                "Original Prompt": seed["Prompt"],
+                "Attack Strategy": None,
+                "Attacked Prompt": None,
+                "Attack Success": False,
+                "Execution Time": None,
+                "Response": None,
+                "Error": str(e)
+            })
 
     save_json(results, "reports/results.json")
 
-    print("\n" + "=" * 50)
+    print("\n" + "=" * 60)
     print(f"✅ Successfully processed {len(results)} prompts.")
     print("📄 Report generated successfully.")
-    print("=" * 50)
+    print("=" * 60)
 
 
 def main():
-    """
-    Entry point of the pipeline.
-    """
     process_dataset()
 
 
