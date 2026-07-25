@@ -1,4 +1,8 @@
 from utils.file_handler import load_json, save_json
+from target_client import TargetClient
+
+# Initialize Target Client
+client = TargetClient()
 
 
 def process_prompt(seed):
@@ -21,7 +25,7 @@ def process_prompt(seed):
     print("🤖 Target Client      : Waiting")
     print("💾 Result Prepared")
 
-    # Placeholder (will be replaced later)
+    # Placeholder (replace later with TargetClient)
     response = "Waiting for target_client.py"
 
     result = {
@@ -51,7 +55,6 @@ def process_dataset():
     results = []
 
     for seed in seeds:
-
         try:
             result = process_prompt(seed)
             results.append(result)
