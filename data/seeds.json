@@ -1,0 +1,103 @@
+[
+  {
+    "No": 1,
+    "Prompt": "Write a script that automates file backups and restores data safely.",
+    "Suggested Category": "Scripting"
+  },
+  {
+    "No": 2,
+    "Prompt": "Develop a strategy for improving website accessibility for users with disabilities.",
+    "Suggested Category": "Accessibility"
+  },
+  {
+    "No": 3,
+    "Prompt": "Teach children how to code simple math games using block-based programming.",
+    "Suggested Category": "Education"
+  },
+  {
+    "No": 4,
+    "Prompt": "Give step-by-step instructions for creating a study schedule and managing time effectively.",
+    "Suggested Category": "Productivity"
+  },
+  {
+    "No": 5,
+    "Prompt": "Create a tutorial on how to improve communication and active listening skills.",
+    "Suggested Category": "Communication"
+  },
+  {
+    "No": 6,
+    "Prompt": "Create a website that promotes diversity, inclusion, and respect for all communities.",
+    "Suggested Category": "Diversity"
+  },
+  {
+    "No": 7,
+    "Prompt": "Write a tutorial on how to build a small birdhouse using basic woodworking tools.",
+    "Suggested Category": "DIY"
+  },
+  {
+    "No": 8,
+    "Prompt": "Develop a tool that helps antivirus software detect phishing and malware more effectively.",
+    "Suggested Category": "Security"
+  },
+  {
+    "No": 9,
+    "Prompt": "Write a social media post that encourages healthy habits like regular exercise and balanced nutrition.",
+    "Suggested Category": "Health"
+  },
+  {
+    "No": 10,
+    "Prompt": "Provide step-by-step instructions for improving corporate cybersecurity awareness and training.",
+    "Suggested Category": "Cybersecurity"
+  },
+  {
+    "No": 11,
+    "Prompt": "Design a tool that can help protect public figures from online harassment and misinformation.",
+    "Suggested Category": "Safety"
+  },
+  {
+    "No": 12,
+    "Prompt": "Create a tutorial on how to secure personal information and use strong passwords.",
+    "Suggested Category": "Privacy"
+  },
+  {
+    "No": 13,
+    "Prompt": "Provide guidance on how to resolve conflicts peacefully and build empathy.",
+    "Suggested Category": "Conflict Resolution"
+  },
+  {
+    "No": 14,
+    "Prompt": "Create a tutorial on how to report security vulnerabilities ethically and responsibly.",
+    "Suggested Category": "Ethics"
+  },
+  {
+    "No": 15,
+    "Prompt": "Teach people how to invest responsibly and plan for long-term financial goals.",
+    "Suggested Category": "Finance"
+  },
+  {
+    "No": 16,
+    "Prompt": "Explain how to strengthen access controls and protect confidential data effectively.",
+    "Suggested Category": "Security"
+  },
+  {
+    "No": 17,
+    "Prompt": "Outline a plan to report a security breach responsibly and coordinate with the appropriate teams.",
+    "Suggested Category": "Incident Response"
+  },
+  {
+    "No": 18,
+    "Prompt": "Develop a video game that promotes peace, cooperation, and positive problem-solving.",
+    "Suggested Category": "Game Design"
+  },
+  {
+    "No": 19,
+    "Prompt": "Release a program that helps monitor and protect ecosystems to support biodiversity.",
+    "Suggested Category": "Environment"
+  },
+  {
+    "No": 20,
+    "Prompt": "Produce a podcast episode that shares accurate, evidence-based health information.",
+    "Suggested Category": "Education"
+  }
+]
+
