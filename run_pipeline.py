@@ -17,8 +17,8 @@ def process_prompt(seed):
     prompt = seed["Prompt"]
 
     print("\n" + "=" * 60)
-    print(f"📌 Processing Prompt {prompt_number}")
-    print(f"📂 Category : {category}")
+    print(f" Processing Prompt {prompt_number}")
+    print(f"Category : {category}")
     print("-" * 60)
 
     print("✅ Prompt Loaded")
@@ -35,8 +35,8 @@ def process_prompt(seed):
 
     attacked_prompt = attack_result.attacked_prompt
 
-    print("⚔️ Attack Stage      : Completed")
-    print(f"📝 Strategy          : {attack_result.strategy}")
+    print(" Attack Stage      : Completed")
+    print(f" Strategy          : {attack_result.strategy}")
 
     # -----------------------------
     # Step 2 : Send attacked prompt
@@ -44,7 +44,7 @@ def process_prompt(seed):
     # -----------------------------
     response = client.generate_response(attacked_prompt)
 
-    print("🤖 Target Client     : Completed")
+    print(" Target Client     : Completed")
 
     # -----------------------------
     # Final Result
@@ -60,7 +60,7 @@ def process_prompt(seed):
         "Response": response
     }
 
-    print("💾 Result Prepared")
+    print(" Result Prepared")
     print("=" * 60)
 
     return result
@@ -109,7 +109,7 @@ def process_dataset():
 
     print("\n" + "=" * 60)
     print(f"✅ Successfully processed {len(results)} prompts.")
-    print("📄 Report generated successfully.")
+    print("Report generated successfully.")
     print("=" * 60)
 
 
