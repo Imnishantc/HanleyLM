@@ -19,10 +19,7 @@ judge = JudgeAgent()
 
 def process_prompt(seed):
     """
-    Process one prompt through:
-    1. Attack Agent
-    2. Target Model
-    3. Judge Agent
+    Process one prompt through all attack strategies.
     """
 
     prompt_number = seed["No"]
@@ -34,82 +31,116 @@ def process_prompt(seed):
     print(f"Category : {category}")
     print("=" * 60)
 
-    print("✅ Prompt Loaded")
+    all_results = []
 
     # ------------------------------------------------------
-    # Step 1 : Generate Adversarial Prompt
+    # Run Every Attack Strategy
     # ------------------------------------------------------
 
-    attack_result = attacker.attack(prompt)
+    for strategy in attacker.available_strategies():
 
-    if not attack_result.success:
-        raise RuntimeError(
-            f"Attack failed: {attack_result.error}"
+        attack_result = attacker.attack(
+            prompt=prompt,
+            strategy=strategy
         )
 
-    attacked_prompt = attack_result.attacked_prompt
+        print("\n" + "-" * 60)
+        print(f"Strategy : {attack_result.strategy}")
+        print("-" * 60)
 
-    print("✅ Attack Stage Completed")
-    print(f"Attack Strategy : {attack_result.strategy}")
+        if not attack_result.success:
 
-    # ------------------------------------------------------
-    # Step 2 : Query Target Model
-    # ------------------------------------------------------
+            all_results.append({
 
-    response = client.generate_response(attacked_prompt)
+                "No": prompt_number,
 
-    print("✅ Target Model Response Received")
+                "Category": category,
 
-    # ------------------------------------------------------
-    # Step 3 : Judge Evaluation
-    # ------------------------------------------------------
+                "Original Prompt": prompt,
 
-    judge_result = judge.evaluate(
-        original_prompt=prompt,
-        attacked_prompt=attacked_prompt,
-        model_response=response
-    )
+                "Attack Strategy": attack_result.strategy,
 
-    print("✅ Judge Evaluation Completed")
+                "Attacked Prompt": None,
 
-    # ------------------------------------------------------
-    # Final Result
-    # ------------------------------------------------------
+                "Attack Generated": False,
 
-    result = {
+                "Target Response": None,
 
-        "No": prompt_number,
+                "Attack Success": False,
 
-        "Category": category,
+                "Risk Score": 0.0,
 
-        "Original Prompt": prompt,
+                "Severity": "Unknown",
 
-        "Attack Strategy": attack_result.strategy,
+                "Judge Decision": attack_result.error,
 
-        "Attacked Prompt": attacked_prompt,
+                "Timestamp": None,
 
-        "Attack Generated": attack_result.success,
+                "Execution Time": attack_result.execution_time
 
-        "Target Response": response,
+            })
 
-        "Attack Success": judge_result.attack_success,
+            continue
 
-        "Risk Score": judge_result.risk_score,
+        attacked_prompt = attack_result.attacked_prompt
 
-        "Severity": judge_result.severity,
+        # --------------------------------------------------
+        # Target Model
+        # --------------------------------------------------
 
-        "Judge Decision": judge_result.reasoning,
+        response = client.generate_response(
+            attacked_prompt
+        )
 
-        "Timestamp": judge_result.timestamp,
+        # --------------------------------------------------
+        # Judge
+        # --------------------------------------------------
 
-        "Execution Time": attack_result.execution_time
+        judge_result = judge.evaluate(
 
-    }
+            original_prompt=prompt,
 
-    print("✅ Result Prepared")
+            attacked_prompt=attacked_prompt,
 
-    return result
+            model_response=response
 
+        )
+
+        # --------------------------------------------------
+        # Store Result
+        # --------------------------------------------------
+
+        all_results.append({
+
+            "No": prompt_number,
+
+            "Category": category,
+
+            "Original Prompt": prompt,
+
+            "Attack Strategy": attack_result.strategy,
+
+            "Attacked Prompt": attacked_prompt,
+
+            "Attack Generated": True,
+
+            "Target Response": response,
+
+            "Attack Success": judge_result.attack_success,
+
+            "Risk Score": judge_result.risk_score,
+
+            "Severity": judge_result.severity,
+
+            "Judge Decision": judge_result.reasoning,
+
+            "Timestamp": judge_result.timestamp,
+
+            "Execution Time": attack_result.execution_time
+
+        })
+
+    return all_results
 
 # ==========================================================
 # Process Complete Dataset
@@ -117,7 +148,7 @@ def process_prompt(seed):
 
 def process_dataset():
 
-    seeds = load_json("data/seeds.json")
+    seeds = load_json("data/seeds_test.json")
 
     if seeds is None:
         print("❌ Could not load dataset.")
@@ -137,9 +168,9 @@ def process_dataset():
 
         try:
 
-            result = process_prompt(seed)
+           prompt_results = process_prompt(seed)
 
-            results.append(result)
+           results.extend(prompt_results)
 
         except Exception as e:
 
@@ -211,7 +242,8 @@ def process_dataset():
         print(e)
 
     print("\n" + "=" * 60)
-    print(f"Successfully Processed {len(results)} Prompts")
+    print(f"Successfully Processed {len(seeds)} Prompts")
+    print(f"Total Attack Executions : {len(results)}")
     print("=" * 60)
 
 
