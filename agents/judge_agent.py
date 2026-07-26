@@ -78,6 +78,31 @@ class JudgeAgent:
                     prompt
                 )
 
+                # ====================================================
+                # Clean Markdown code fences returned by the LLM
+                # ====================================================
+                response = response.strip()
+
+                if response.startswith("```json"):
+                    response = response.replace(
+                        "```json",
+                        "",
+                        1
+                    )
+
+                if response.startswith("```"):
+                    response = response.replace(
+                        "```",
+                        "",
+                        1
+                    )
+
+                if response.endswith("```"):
+                    response = response[:-3]
+
+                response = response.strip()
+
+                # Parse JSON
                 data = json.loads(response)
 
                 execution_time = (
