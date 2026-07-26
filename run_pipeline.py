@@ -3,6 +3,7 @@ from target_client import TargetClient
 from agents.attacker_agent import AttackerAgent
 from agents.judge_agent import JudgeAgent
 from utils.report_generator import ReportGenerator
+from utils.reports_V2.report_generator_v2 import ReportGenerator
 
 # ==========================================================
 # Initialize Components
